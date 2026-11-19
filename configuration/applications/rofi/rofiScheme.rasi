@@ -1,0 +1,108 @@
+configuration {
+  show-icons: false;
+  icon-theme: "Papirus";
+}
+
+* {
+  font: "JetBrains Mono Bold 10";
+
+  bgn: transparent;
+  bg0: #000000;
+  bg1: #010203;
+  bg2: #0b0b0b;
+  bg3: #262736;
+  br0: #4a4a4f;
+  fg0: #e4e4e4;
+  fg1: #4A4A4F;
+  fg2: #ff9966;
+  fg3: #b392f0;
+
+  color-window-bg: @bg2;
+  color-window-border: @br0;
+  color-prompt: @fg3;
+  color-entry: @fg3;
+  color-sel-normal: @bg3;
+  color-sel-urgent: @bgn;
+  color-sel-active: @bg3;
+  color-alt-normal: @bgn;
+  color-alt-urgent: @bgn;
+  color-alt-active: @bg3;
+  color-text-normal: @fg1;
+  color-text-selected: @fg0;
+  color-text-urgent-selected: @fg3;
+  color-text-active-selected: @fg1;
+  color-text-urgent-alt: @fg3;
+  color-text-active-alt: @fg1;
+
+  window-width: 550px;
+  window-height: 213px;
+  window-border: 1px;
+  window-radius: 0px;
+  window-x-offset: 0px;
+  window-y-offset: 0px;
+  inputbar-spacing: 5px;
+  inputbar-padding: 4px 8px;
+  inputbar-valign: 0.5;
+  listview-lines: 6;
+  listview-columns: 1;
+  element-padding: 0px 8px;
+  element-icon-margin: 0 10px 0 0;
+
+  background-color: @bgn;
+  accent-color: @bg0;
+  text-color: @fg1;
+  padding: 0;
+  spacing: 0;
+  margin: 0;
+}
+
+window {
+  background-color: @color-window-bg;
+  border-color: @color-window-border;
+  border-radius: @window-radius;
+  width: @window-width;
+  height: @window-height;
+  border: @window-border;
+  x-offset: @window-x-offset;
+  y-offset: @window-y-offset;
+}
+
+inputbar {
+  spacing: @inputbar-spacing;
+  padding: @inputbar-padding;
+  children: [ prompt, entry ];
+}
+
+prompt, entry {
+  text-color: @color-prompt;
+  vertical-align: @inputbar-valign;
+}
+
+listview {
+  lines: @listview-lines;
+  columns: @listview-columns;
+  fixed-height: false;
+}
+
+element {
+  padding: @element-padding;
+}
+
+element-icon {
+  margin: @element-icon-margin;
+}
+
+element.selected.normal { background-color: @color-sel-normal; }
+element.selected.urgent { background-color: @color-sel-urgent; }
+element.selected.active { background-color: @color-sel-active; }
+
+element.alternate.normal { background-color: @color-alt-normal; }
+element.alternate.urgent { background-color: @color-alt-urgent; }
+element.alternate.active { background-color: @color-alt-active; }
+
+element-text.normal { text-color: @color-text-normal; }
+element-text.selected { text-color: @color-text-selected; }
+element-text.urgent.selected { text-color: @color-text-urgent-selected; }
+element-text.active.selected { text-color: @color-text-active-selected; }
+element-text.urgent.alternate { text-color: @color-text-urgent-alt; }
+element-text.active.alternate { text-color: @color-text-active-alt; }

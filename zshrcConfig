@@ -1,0 +1,117 @@
+# Disable automatic updates
+DISABLE_AUTO_UPDATE="true"
+
+# Oh-My-Zsh core configuration and theme
+export ZSH="$HOME/.oh-my-zsh"
+ZSH_COLORIZE_STYLE="colorful"
+ZSH_THEME="lukerandall"
+
+# Persistent completion cache settings
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh/cache
+
+# System and user paths without duplicates
+typeset -U path PATH
+
+path=(
+  "$HOME/.local/bin"
+  "$HOME/.local/share/gem/ruby/3.3.0/bin"
+  "$HOME/.local/share/pnpm/bin"
+  "$HOME/dotnet"
+  "/snap/bin"
+  "/usr/sandbox"
+  "/usr/local/bin"
+  "/usr/local/sbin"
+  "/usr/local/go/bin"
+  "/usr/bin"
+  "/usr/sbin"
+  "/bin"
+  "/sbin"
+  $path
+)
+
+export PATH
+
+# Enabled plugins for Oh-My-Zsh
+plugins=(
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  zsh-tshark-autocomplete
+  colorize
+  git
+)
+
+# Load Oh-My-Zsh framework
+source "$ZSH/oh-my-zsh.sh"
+
+# Pentesting workspace directory generator
+mackt() {
+  mkdir -p {exploits,pivoting,targets,access,scripts}
+  touch {usernames.txt,passwords.txt,credentials.txt,scope-map.txt,flag-map.mdx}
+}
+
+# CTF categories directory generator
+chakt() {
+  mkdir -p {forensics,web,reversing,scripting,cryptography,pwn,miscellaneous}
+}
+
+# Fetch remote server date from HTTP header
+getDate() {
+  date -d "$(wget --method=HEAD -qSO- --max-redirect=0 "$@" 2>&1 | sed -n 's/^ *Date: *//p')" "+%Y-%m-%d %H:%M:%S"
+}
+
+# Extract and format clean port numbers
+getPorts() {
+  echo "$@" | awk -F '/' '{print $1}' | sed -z 's/\n/,/g'
+}
+
+# Deep system cleanup and cache release
+sysclean() {
+  sudo apt autoremove -y
+  sudo apt clean
+  sudo journalctl --vacuum-time=5d
+  sync
+  echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
+}
+
+reload() {
+  source ~/.zshrc;
+}
+
+# Useful terminal aliases
+alias bat='batcat --theme="base16" -l c'
+alias rmall='sudo rm -rf'
+alias cls='clear'
+alias grep='grep --color=auto'
+
+# Conditional loading of custom autocomplete plugins
+if [[ -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+  source ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+
+if [[ -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-syntax-highlighting ]]; then
+  source ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+if [[ -f ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions/zsh-tshark-autocomplete.zsh ]]; then
+  zstyle ':autocomplete:tab:*' insert-unambiguous yes
+  zstyle ':autocomplete:tab:*' widget-style menu-select
+  zstyle ':autocomplete:*' min-input 2
+  bindkey "$key[Up]" up-line-or-history
+  bindkey "$key[Down]" down-line-or-history
+fi
+
+# Bash history auto save
+HISTFILE=~/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+setopt appendhistory
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='micro'
+else
+  export EDITOR='vim'
+fi
